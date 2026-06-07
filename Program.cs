@@ -1,12 +1,15 @@
-﻿namespace TS_DS_CAP_01
+﻿using Microsoft.Win32;
+
+namespace TS_DS_CAP_01
 {
     internal class Program
     {
-        List<string> passengerNames = new List<string>()
+      static List<string> passengerNames = new List<string>()
         {"Ali","Maryam","Bader","Omar","Noor"};
-        List<string> ticketNumbers = new List<string>() { "TKT-100", "TKT-200", "TKT-300", "TKT-400", "TKT-500" };
-        string[] flightNumbers = { "OA101", "OA102", "OA103", "OA104", "OA105", "OA106" };
-        List<string> availableDates = new List<string>() { "06-03-2026", "28-04-2026", "19-05-2026", "02-06-2026" };
+      static List<string> ticketNumbers = new List<string>() 
+      { "TKT-001", "TKT-002", "TKT-003", "TKT-004", "TKT-005" };
+      string[] flightNumbers = { "OA101", "OA102", "OA103", "OA104", "OA105", "OA106" };
+      static List<string> availableDates = new List<string>() { "06-03-2026", "28-04-2026", "19-05-2026", "02-06-2026" };
         Dictionary<string, string> bookingRecord = new Dictionary<string, string>()
         {
             { "TKT-100","OA101|06-03-2026" },
@@ -47,12 +50,35 @@
             Console.WriteLine("10. Manage Waitlist & Seat Assignment");
             Console.WriteLine("0. Exit");
         }
-      
-              
+        //Register New Passenger fuction
+        public static void registerNewPassenger()
+        {
+            Console.WriteLine("Enter Passenger Full Name:");
+            string name = Console.ReadLine();
+
+            if (name == "")
+            {
+                Console.WriteLine("Name is empty");
+            }
+            if (passengerNames.Contains(name))
+            {
+                Console.WriteLine("name already exist");
+            }
+
+            passengerNames.Add(name);
+            string ticketId = "TKT-00" + passengerNames.Count;
+
+            ticketNumbers.Add(ticketId);
+            Console.WriteLine("New passenger name:" + name);
+            Console.WriteLine("New ticket ID:" + ticketId);
+
+            
+        
+        }
+
         static void Main(string[] args)
         {
-
-
+            
             bool exit = false;
             while (exit == false)
 
@@ -64,6 +90,7 @@
                 switch (choice)
                 {
                     case 1:
+                        registerNewPassenger();//Register New Passenger
                         break;
                     case 2:
                         break;
