@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.ComponentModel.Design;
 
 namespace TS_DS_CAP_01
 {
@@ -21,7 +22,7 @@ namespace TS_DS_CAP_01
 
         Queue<string> checkedInQueue = new Queue<string>(new string[] { "Ali", "Maryam", "Bader", "Omar", "Noor" });
         Stack<string> boardingStack = new Stack<string>();
-        List<string> cancelledTickets = new List<string>();
+        static List<string> cancelledTickets = new List<string>();
         Dictionary<string, string> passengerSeatMap = new Dictionary<string, string>()
             {
             {"Ali","14A"},
@@ -75,6 +76,29 @@ namespace TS_DS_CAP_01
             
         
         }
+        public static void viewAllPassengers()
+        {
+            if (passengerNames.Count == 0)
+            {
+                Console.WriteLine("No passengers registered yet");
+            }
+            Console.WriteLine("No. | Passenger Name | Ticket ID | Status");
+
+            for (int i = 0; i < passengerNames.Count; i++)
+                if (cancelledTickets.Contains(ticketNumbers[i]))
+                {
+                    Console.WriteLine((i + 1) + " " + passengerNames[i] + " " + ticketNumbers[i] + "CANCELLED");
+                }
+            else
+                {
+                    Console.WriteLine((i + 1) + " " + passengerNames[i] + " " + ticketNumbers[i] + "Active");
+                }
+            Console.WriteLine("total of passenger:" +passengerNames.Count);
+        }
+
+
+        
+        
 
         static void Main(string[] args)
         {
@@ -93,6 +117,7 @@ namespace TS_DS_CAP_01
                         registerNewPassenger();//Register New Passenger
                         break;
                     case 2:
+                        viewAllPassengers();
                         break;
                     case 3:
                         break;
