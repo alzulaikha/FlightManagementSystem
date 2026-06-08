@@ -6,12 +6,13 @@ namespace TS_DS_CAP_01
     internal class Program
     {
       static List<string> passengerNames = new List<string>()
-        {"Ali","Maryam","Bader","Omar","Noor"};
+         {"Ali","Maryam","Bader","Omar","Noor"};
       static List<string> ticketNumbers = new List<string>() 
-      { "TKT-001", "TKT-002", "TKT-003", "TKT-004", "TKT-005" };
-      string[] flightNumbers = { "OA101", "OA102", "OA103", "OA104", "OA105", "OA106" };
-      static List<string> availableDates = new List<string>() { "06-03-2026", "28-04-2026", "19-05-2026", "02-06-2026" };
-        Dictionary<string, string> bookingRecord = new Dictionary<string, string>()
+         { "TKT-001", "TKT-002", "TKT-003", "TKT-004", "TKT-005" };
+     static string[] flightNumbers = { "OA101", "OA102", "OA103", "OA104", "OA105", "OA106" };
+      static List<string> availableDates = new List<string>()  
+         { "06-03-2026", "28-04-2026", "19-05-2026", "02-06-2026" };
+      static Dictionary<string, string> bookingRecord = new Dictionary<string, string>()
         {
             { "TKT-100","OA101|06-03-2026" },
             { "TKT-200","OA102|28-04-2026" },
@@ -76,6 +77,7 @@ namespace TS_DS_CAP_01
             
         
         }
+        //View All Passengers function
         public static void viewAllPassengers()
         {
             if (passengerNames.Count == 0)
@@ -84,21 +86,77 @@ namespace TS_DS_CAP_01
             }
             Console.WriteLine("No. | Passenger Name | Ticket ID | Status");
 
+            cancelledTickets.Add("TKT-005");
             for (int i = 0; i < passengerNames.Count; i++)
                 if (cancelledTickets.Contains(ticketNumbers[i]))
                 {
-                    Console.WriteLine((i + 1) + " " + passengerNames[i] + " " + ticketNumbers[i] + "CANCELLED");
+                    Console.WriteLine((i + 1) + "  " + passengerNames[i] + "   " + ticketNumbers[i] +"  " + "CANCELLED");
                 }
             else
                 {
-                    Console.WriteLine((i + 1) + " " + passengerNames[i] + " " + ticketNumbers[i] + "Active");
+                    Console.WriteLine((i + 1) + "  " + passengerNames[i] + "   " + ticketNumbers[i] + " " + "Active");
                 }
             Console.WriteLine("total of passenger:" +passengerNames.Count);
         }
+        //Book a Flight Ticket function
+        //public static void bookFlightTicket()
+        //{
+        //    Console.WriteLine("Enter Ticket ID:");
+        //    string ticketId= Console.ReadLine();
+        //    if (!ticketNumbers.Contains(ticketId) && cancelledTickets.Contains(ticketId))
+        //    {
+            
+        //        Console.WriteLine("invalid ticket");
+        //    }
+           
+        //}
+
+       
 
 
-        
-        
+
+     public static void  viewBookingDetails()
+ 
+        {
+            Console.Write("Enter ticket id: ");
+            string ticketId= Console.ReadLine();
+
+           
+            if (!ticketNumbers.Contains(ticketId))
+            {
+                Console.WriteLine("Ticket not found");
+                return;
+            }
+
+
+            int index = ticketNumbers.IndexOf(ticketId);
+            string passengerName = passengerNames[index];
+
+
+            if (cancelledTickets.Contains(ticketId))
+            {
+                Console.WriteLine("This ticket has been cancelled");
+                return;
+            }
+
+
+            if (!bookingRecord.ContainsKey(ticketId))
+            {
+                Console.WriteLine("No booking found for this ticket");
+                return;
+            }
+
+
+            string booking = bookingRecord[ticketId];
+
+            Console.WriteLine("\n=== Booking Details ===");
+            Console.WriteLine("Passenger: " + passengerName);
+            Console.WriteLine("Ticket ID: " + ticketId);
+            Console.WriteLine("Booking: " + booking);
+           
+        }
+
+
 
         static void Main(string[] args)
         {
@@ -120,8 +178,10 @@ namespace TS_DS_CAP_01
                         viewAllPassengers();
                         break;
                     case 3:
+                      
                         break;
                     case 4:
+                        viewBookingDetails();
                         break;
                     case 5:
                         break;
