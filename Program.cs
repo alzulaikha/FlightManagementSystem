@@ -34,7 +34,7 @@ namespace TS_DS_CAP_01
             { "Omar","17A"},
             { "Noor","18A"}
         };
-    Queue<string> waitlistQueue = new Queue<string>();
+   static Queue<string> waitlistQueue = new Queue<string>();
 
 
 
@@ -324,7 +324,7 @@ namespace TS_DS_CAP_01
 
             Console.WriteLine("== Booking Updated Successfully ==");
 
-            Console.WriteLine("Old Booking:");
+            Console.WriteLine("== Old Booking: ==");
             Console.WriteLine("Flight: " + flight);
             Console.WriteLine("Date: " + date);
 
@@ -407,7 +407,111 @@ namespace TS_DS_CAP_01
            Console.WriteLine("Ticket ID: " + ticketId);
            Console.WriteLine("Status: Cancelled Successfully");
             }
-        
+        public static void passengerCheckIn()
+        {
+            Console.WriteLine("1. Check in a passenger ");
+            Console.WriteLine("2. View check-in queue");
+            Console.WriteLine("3. Process next passenger ");
+            Console.WriteLine("0. Back");
+
+            Console.Write("Enter your choice: ");
+            int choice = int.Parse(Console.ReadLine());
+
+            if (choice == 1)
+            {
+                Console.WriteLine("== Check in a passenger == ");
+                Console.Write("Enter Ticket ID: ");
+                string ticketId = Console.ReadLine();
+
+                if (!ticketNumbers.Contains(ticketId))
+                {
+                    Console.WriteLine("Ticket not found.");
+                    return;
+                }
+
+                if (cancelledTickets.Contains(ticketId))
+                {
+                    Console.WriteLine("Ticket is cancelled.");
+                    return;
+                }
+
+                if (!bookingRecord.ContainsKey(ticketId))
+                {
+                    Console.WriteLine("No booking found.");
+                    return;
+                }
+
+                int index = ticketNumbers.IndexOf(ticketId);
+                string passengerName = passengerNames[index];
+
+                if (checkedInQueue.Contains(passengerName))
+                {
+                    Console.WriteLine("Passenger already checked in queue");
+                    return;
+                }
+
+                if (checkedInQueue.Count < 10)
+                {
+                    checkedInQueue.Enqueue(passengerName);
+
+                    Console.WriteLine(passengerName);
+                }
+                else
+                {
+                    waitlistQueue.Enqueue(passengerName);
+
+                    Console.WriteLine(passengerName + " added to waitlist.");
+                }
+            }
+
+            else if (choice == 2)
+            {
+                Console.WriteLine("== Current Check-In Queue: ==");
+
+                int position = 1;
+
+                foreach (string passenger in checkedInQueue)
+                {
+                    Console.WriteLine(position + ". " + passenger);
+                    position++;
+                }
+
+                Console.WriteLine("Waitlist Count: " + waitlistQueue.Count);
+            }
+
+            else if (choice == 3)
+            {
+                if (checkedInQueue.Count == 0)
+                {
+                    Console.WriteLine("No passengers in queue.");
+                    return;
+                }
+
+                string processedPassenger = checkedInQueue.Dequeue();
+
+                Console.WriteLine("Processed: " + processedPassenger);
+
+                if (waitlistQueue.Count == 0)
+                {
+                    string waitPassenger = waitlistQueue.Dequeue();
+
+                    checkedInQueue.Enqueue(waitPassenger);
+
+                    Console.WriteLine(waitPassenger + " moved from waitlist to check-in queue.");
+                }
+            }
+
+            else if (choice == 0)
+            {
+                return;
+            }
+
+            else
+            {
+                Console.WriteLine("Invalid choice.");
+            }
+
+        }
         static void Main(string[] args)
         {
             
@@ -440,6 +544,7 @@ namespace TS_DS_CAP_01
                         cancelTicket(); 
                         break;
                     case 7:
+                        passengerCheckIn();
                         break;
                     case 8:
                         break;
