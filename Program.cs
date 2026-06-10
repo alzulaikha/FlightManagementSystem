@@ -22,8 +22,8 @@ namespace TS_DS_CAP_01
         //};
 
 
-        Queue<string> checkedInQueue = new Queue<string>(new string[] { "Ali", "Maryam", "Bader", "Omar", "Noor" });
-        Stack<string> boardingStack = new Stack<string>();
+        static Queue<string> checkedInQueue = new Queue<string>();/*new string[] { "Ali", "Maryam", "Bader", "Omar", "Noor" });*/
+        static Stack<string> boardingStack = new Stack<string>();
         static List<string> cancelledTickets = new List<string>()
         { "TKT-005"};
         Dictionary<string, string> passengerSeatMap = new Dictionary<string, string>()
@@ -333,7 +333,82 @@ namespace TS_DS_CAP_01
             Console.WriteLine("Date: " + newDate);
         }
 
-static void Main(string[] args)
+        public static void cancelTicket(){
+              Console.Write("Enter Ticket ID: ");
+              string ticketId = Console.ReadLine();
+
+  
+             if (!ticketNumbers.Contains(ticketId))
+              {
+                    Console.WriteLine("Ticket not found!");
+                return;
+               }
+
+             if (cancelledTickets.Contains(ticketId))
+              {
+                 Console.WriteLine("Ticket already cancelled!");
+                return;
+               }
+
+
+              int index = ticketNumbers.IndexOf(ticketId);
+              string passengerName = passengerNames[index];
+
+
+            if (bookingRecord.ContainsKey(ticketId))
+              {
+              bookingRecord.Remove(ticketId);
+              Console.WriteLine("Booking was removed.");
+              }
+
+
+             cancelledTickets.Add(ticketId);
+
+
+           Queue<string> tempQueue = new Queue<string>();
+
+           while (checkedInQueue.Count > 0)
+           {
+              string passenger = checkedInQueue.Dequeue();
+
+              if (passenger != passengerName)
+             {
+                tempQueue.Enqueue(passenger);
+             }
+               }
+
+            checkedInQueue = tempQueue;
+
+
+          Stack<string> tempStack = new Stack<string>();
+
+               while (boardingStack.Count > 0)
+              {
+               string passenger = boardingStack.Pop();
+
+                 if (passenger != passengerName)
+                {
+                 tempStack.Push(passenger);
+                 }
+                 }
+
+          Stack<string> finalStack = new Stack<string>();
+
+           while (tempStack.Count > 0)
+           {
+             finalStack.Push(tempStack.Pop());
+           }
+
+          boardingStack = finalStack;
+
+
+           Console.WriteLine("===== Cancellation Summary =====");
+           Console.WriteLine("Passenger Name: " + passengerName);
+           Console.WriteLine("Ticket ID: " + ticketId);
+           Console.WriteLine("Status: Cancelled Successfully");
+            }
+        
+        static void Main(string[] args)
         {
             
             bool exit = false;
@@ -362,6 +437,7 @@ static void Main(string[] args)
                         updateBooking(); //Case 05 Update a Booking
                         break;
                     case 6:
+                        cancelTicket(); 
                         break;
                     case 7:
                         break;
