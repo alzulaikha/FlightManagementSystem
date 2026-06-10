@@ -1,12 +1,12 @@
 ﻿using Microsoft.Win32;
 using System.ComponentModel.Design;
-
+using System.IO;
 namespace TS_DS_CAP_01
 {
     internal class Program
     {
-      static List<string> passengerNames = new List<string>()
-         {"Ali","Maryam","Bader","Omar","Noor"};
+        static List<string> passengerNames = new List<string>();
+         
       static List<string> ticketNumbers = new List<string>() 
          { "TKT-001", "TKT-002", "TKT-003", "TKT-004", "TKT-005" };
       static string[] flightNumbers = { "OA101", "OA102", "OA103", "OA104", "OA105", "OA106" };
@@ -22,7 +22,7 @@ namespace TS_DS_CAP_01
         //};
 
 
-        static Queue<string> checkedInQueue = new Queue<string>();/*new string[] { "Ali", "Maryam", "Bader", "Omar", "Noor" });*/
+        static Queue<string> checkedInQueue = new Queue<string>(new string[] { "Ali", "Maryam", "Bader", "Omar", "Noor" });
         static Stack<string> boardingStack = new Stack<string>();
         static List<string> cancelledTickets = new List<string>()
         { "TKT-005"};
@@ -36,8 +36,21 @@ namespace TS_DS_CAP_01
         };
    static Queue<string> waitlistQueue = new Queue<string>();
 
+        static void LoadPassengers()
+        {
+            if (File.Exists("Passengers.txt"))
+            {
+                string[] lines = File.ReadAllLines("Passengers.txt");
 
+                foreach (string line in lines)
+                {
+                    string[] parts = line.Split('|');
 
+                    passengerNames.Add(parts[0]);
+                    ticketNumbers.Add(parts[1]);
+                }
+            }
+        }
 
         public static void mainMenu()
         {
@@ -73,11 +86,13 @@ namespace TS_DS_CAP_01
 
             passengerNames.Add(name);
             string ticketId = "TKT-00" + passengerNames.Count;
-
             ticketNumbers.Add(ticketId);
+
+            File.AppendAllText("passengers.txt", name + "|" + Environment.NewLine);
             Console.WriteLine("New passenger name:" + name);
             Console.WriteLine("New ticket ID:" + ticketId);
             
+
             
         
         }
@@ -514,11 +529,13 @@ namespace TS_DS_CAP_01
         }
         static void Main(string[] args)
         {
-            
+            LoadPassengers();
+
             bool exit = false;
             while (exit == false)
 
             {
+               
                 mainMenu();
                 Console.WriteLine("Enter your choice: ");
                 int choice = int.Parse(Console.ReadLine());
