@@ -166,8 +166,6 @@ namespace TS_DS_CAP_01
             
         }
         
-
-
         public static void  viewBookingDetails()
  
         {
@@ -212,10 +210,130 @@ namespace TS_DS_CAP_01
          
 
         }
+        //Update a Booking function
+        public static void updateBooking()
+        {
+            Console.Write("Enter Ticket ID: ");
+            string ticketId = Console.ReadLine();
 
 
+            if (!ticketNumbers.Contains(ticketId))
+            {
+                Console.WriteLine("Ticket not found.");
+                return;
+            }
 
-        static void Main(string[] args)
+
+            if (cancelledTickets.Contains(ticketId))
+            {
+                Console.WriteLine("This ticket has been cancelled.");
+                return;
+            }
+
+
+            if (!bookingRecord.ContainsKey(ticketId))
+            {
+                Console.WriteLine("No booking found for this ticket.");
+                return;
+            }
+
+
+            string booking = bookingRecord[ticketId];
+
+            string[] parts = booking.Split('|');
+
+            string flight = parts[0];
+            string date = parts[1];
+
+            Console.WriteLine("=== Current Booking: ===");
+            Console.WriteLine("Flight: " + flight);
+            Console.WriteLine("Date: " + date);
+
+
+            Console.WriteLine("=== Update a Booking ===");
+            Console.WriteLine("1. Change Flight");
+            Console.WriteLine("2. Change Date");
+            Console.WriteLine("3. Change Both");
+            Console.WriteLine("0. Cancel Update");
+
+            Console.Write("Enter your choice: ");
+            int choice = int.Parse(Console.ReadLine());
+
+            string newFlight = flight;
+            string newDate = date;
+
+            if (choice == 1) //Change flight only 
+            {
+                Console.WriteLine("== Available Flights: ==");
+
+                foreach (string f in flightNumbers)
+                {
+                    Console.WriteLine(f);
+                }
+
+                Console.Write("Enter new flight: ");
+                newFlight = Console.ReadLine();
+            }
+            else if (choice == 2) // Change date only 
+            {
+                Console.WriteLine("== Available Dates: ==");
+
+                foreach (string d in availableDates)
+                {
+                    Console.WriteLine(d);
+                }
+
+                Console.Write("Enter new date: ");
+                newDate = Console.ReadLine();
+            }
+            else if (choice == 3) // Change both 
+            {
+                Console.WriteLine("== Available Flights: ==");
+
+                foreach (string f in flightNumbers)
+                {
+                    Console.WriteLine(f);
+                }
+
+                Console.Write("Enter new flight: ");
+                newFlight = Console.ReadLine();
+
+                Console.WriteLine("== Available Dates: ==");
+
+                foreach (string d in availableDates)
+                {
+                    Console.WriteLine(d);
+                }
+
+                Console.Write("Enter new date: ");
+                newDate = Console.ReadLine();
+            }
+            else if (choice == 0) //Cancel update
+            {
+                Console.WriteLine("Update cancelled.");
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice");
+                return;
+            }
+
+
+            bookingRecord[ticketId] = newFlight + "|" + newDate;
+
+            Console.WriteLine("== Booking Updated Successfully ==");
+
+            Console.WriteLine("Old Booking:");
+            Console.WriteLine("Flight: " + flight);
+            Console.WriteLine("Date: " + date);
+
+            Console.WriteLine("== New Booking: ==");
+            Console.WriteLine("Flight: " + newFlight);
+            Console.WriteLine("Date: " + newDate);
+        }
+
+static void Main(string[] args)
         {
             
             bool exit = false;
@@ -241,6 +359,7 @@ namespace TS_DS_CAP_01
                         viewBookingDetails(); //Case 04 View Booking Details
                         break;
                     case 5:
+                        updateBooking(); //Case 05 Update a Booking
                         break;
                     case 6:
                         break;
