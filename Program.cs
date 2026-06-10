@@ -6,11 +6,10 @@ namespace TS_DS_CAP_01
     internal class Program
     {
         static List<string> passengerNames = new List<string>();
-         
-      static List<string> ticketNumbers = new List<string>() 
-         { "TKT-001", "TKT-002", "TKT-003", "TKT-004", "TKT-005" };
-      static string[] flightNumbers = { "OA101", "OA102", "OA103", "OA104", "OA105", "OA106" };
-      static List<string> availableDates = new List<string>()  
+
+        static List<string> ticketNumbers = new List<string>();
+        static string[] flightNumbers = { "OA101", "OA102", "OA103", "OA104", "OA105", "OA106" };
+        static List<string> availableDates = new List<string>()  
          { "06-03-2026", "28-04-2026", "19-05-2026", "02-06-2026" };
         static Dictionary<string, string> bookingRecord = new Dictionary<string, string>();
         //       {
@@ -88,7 +87,7 @@ namespace TS_DS_CAP_01
             string ticketId = "TKT-00" + passengerNames.Count;
             ticketNumbers.Add(ticketId);
 
-            File.AppendAllText("passengers.txt", name + "|" + Environment.NewLine);
+            File.AppendAllText("passengers.txt", name + "|" + ticketId+ Environment.NewLine);
             Console.WriteLine("New passenger name:" + name);
             Console.WriteLine("New ticket ID:" + ticketId);
             
