@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Xml.Linq;
 namespace TS_DS_CAP_01
 {
     internal class Program
@@ -87,7 +88,11 @@ namespace TS_DS_CAP_01
             string ticketId = "TKT-00" + passengerNames.Count;
             ticketNumbers.Add(ticketId);
 
-            File.AppendAllText("passengers.txt", name + "|" + ticketId+ Environment.NewLine);
+            using (StreamWriter writer = new StreamWriter("Passengers.txt", true))
+            {
+                writer.WriteLine(name + "|" + ticketId);
+            }
+
             Console.WriteLine("New passenger name:" + name);
             Console.WriteLine("New ticket ID:" + ticketId);
             
@@ -168,9 +173,13 @@ namespace TS_DS_CAP_01
 
             bookingRecord.Add(ticketId, flightNumbers[flightIndex] + "|" + availableDates[dateIndex]);
 
-        
             int index=ticketNumbers.IndexOf(ticketId);
             string passengerName = passengerNames[index];
+
+            using (StreamWriter writer = new StreamWriter("Bookings.txt", true))
+            {
+                writer.WriteLine(passengerName + "|" + ticketId + "|" + flightNumbers[flightIndex] + "|" + availableDates[dateIndex]);
+            }
 
             Console.WriteLine("Ticket ID:  " + ticketId);
             Console.WriteLine("Passenger Name:  " + passengerName);
