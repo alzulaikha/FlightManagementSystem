@@ -34,9 +34,9 @@ namespace TS_DS_CAP_01
             { "Omar","17A"},
             { "Noor","18A"}
         };
-   static Queue<string> waitlistQueue = new Queue<string>();
+        static Queue<string> waitlistQueue = new Queue<string>();
 
-        static void LoadPassengers()
+        static void LoadPassengers() 
         {
             if (File.Exists("Passengers.txt"))
             {
@@ -48,6 +48,21 @@ namespace TS_DS_CAP_01
 
                     passengerNames.Add(parts[0]);
                     ticketNumbers.Add(parts[1]);
+                }
+            }
+        }
+        static void LoadBookings()
+        {
+            if (File.Exists("Bookings.txt"))
+            {
+                string[] Lines = File.ReadAllLines("Bookings.txt");
+
+                foreach (string line in Lines)
+                {
+                    string[] parts = line.Split('|');
+
+                    bookingRecord[parts[1]] = parts[2] + "|" + parts[3];
+                   
                 }
             }
         }
@@ -78,9 +93,16 @@ namespace TS_DS_CAP_01
                 Console.WriteLine("Name is empty");
                 return;
             }
-            if (passengerNames.Contains(name))
+            //if (passengerNames.Contains(name))
+            //{
+            //    Console.WriteLine("name already exist");
+            //    return;
+            //}
+            bool exists = passengerNames.Any(p => p == name);
+
+            if (exists)
             {
-                Console.WriteLine("name already exist");
+                Console.WriteLine("Passenger already exists");
                 return;
             }
 
@@ -538,7 +560,7 @@ namespace TS_DS_CAP_01
         static void Main(string[] args)
         {
             LoadPassengers();
-
+            LoadBookings();
             bool exit = false;
             while (exit == false)
 
