@@ -142,7 +142,13 @@ namespace TS_DS_CAP_01
                 {
                     Console.WriteLine(i + "       " + passengerNames[i] + "        " + ticketNumbers[i] + "      " + "Active");
                 }
-            Console.WriteLine("total of passenger:" +passengerNames.Count);
+            //Console.WriteLine("total of passenger:" +passengerNames.Count);
+
+             int activePassengers =
+             ticketNumbers.Count(t => !cancelledTickets.Contains(t));
+
+             Console.WriteLine("Active Passengers: " + activePassengers);
+           
         }
         // Book a Flight Ticket function
         public static void bookFlightTicket()
